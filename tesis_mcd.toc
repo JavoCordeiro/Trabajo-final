@@ -1,0 +1,10 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Resumen}{\es@scroman {i}}{chapter*.1}%
+\contentsline {chapter}{Agradecimientos}{\es@scroman {ii}}{chapter*.2}%
+\contentsline {chapter}{\'{I}ndice general}{\es@scroman {iii}}{section*.3}%
+\contentsline {chapter}{\chapternumberline {1}Introducción}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Objetivo}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Situación actual}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Algoritmo actual}{1}{section.1.3}%
+\contentsline {chapter}{\chapternumberline {2}Marco teórico}{3}{chapter.2}%
+\contentsline {chapter}{Bibliograf\'{\i }a}{4}{section*.5}%

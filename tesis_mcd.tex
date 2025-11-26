@@ -1,0 +1,138 @@
+\documentclass[a4paper,openany]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber,style=apa,sorting=nyt]{biblatex}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{style}       % Custom style
+\usepackage{udesafrontpage} % Front page
+
+\addbibresource{bibliografia.bib}
+
+%\usepackage{kantlipsum}  % Dummy text
+%\usepackage{xcolor}
+%\usepackage{multirow}
+%\usepackage{adjustbox}
+%\usepackage{graphicx}
+%\graphicspath{{./images/}}
+%\usepackage{float}
+%\usepackage{subcaption}
+%\usepackage{wrapfig}
+
+%\usepackage[export]{adjustbox}%%
+%\usepackage{amssymb,amsmath}
+
+%\newcommand{\dani}[1]{{\color{blue} #1}}
+
+%\newtheorem{definicion}{Definici\'on}[section]
+
+
+
+
+
+
+
+
+
+\title{Plan de Trabajo final}
+\subtitle{}
+\author{Javier Cordeiro\hfill\the\year}
+
+
+\kind{Director: -}
+
+
+\begin{document}
+
+    \frontmatter        % Folios in Roman numerals, unnumbered chapters.
+
+    \mnfrontpage
+
+\chapter{Resumen}
+
+
+\chapter{Agradecimientos}
+
+    \cleartorecto
+    \microtypesetup{protrusion = false}
+    \tableofcontents    % Or \tableofcontents*
+    \cleartorecto
+    \microtypesetup{protrusion = true}
+    \mainmatter         % Folios in Arabic numerals, numbered chapters.
+
+
+
+
+
+
+\chapter{Introducción}
+
+\section{Objetivo}
+El objetivo de este trabajo es desarrollar un modelo de programación lineal para verificar la efectividad del algoritmo  de ''batching''  utilizando actualmente en la empresa Shiphero. El alcance del trabajo no va ser reemplazar al algoritmo, sino verificar las diferencias y encontrar puntos de mejora.   
+
+\section{Situación actual}
+Shiphero desarrolla un software para la gestión de depósitos, que incluye funciones como la gestión de stock, el armado de pedidos y el despacho de mercadería.\\
+El caso en el que se va a enfocar en el trabajo es el de batching y routing. Batching se denomina al proceso en el cual un operario del deposito debe buscar los productos para armar un grupo de pedidos, en este caso 25. Lo productos están almacenados en estanterías, de manera relativamente aleatoria y el objetivo es de los pedidos pendientes encontrar los 25 que estén más cercanos entre si para lograr reducir el tiempo de trabajo. Ésta tarea es clave ya que se estima que el las tareas de recolección de órdenes pueden ser del order del 50\% al 70\% de los costos de operación del depósito.
+
+\section{Algoritmo actual}
+El algoritmo que resuelve el batching se ejecuta cada vez que un operario solicita una acción de batching y determina las 25 ordenes más cercanas entre si entre todos las órdenes pendientes en ese momento.
+
+\begin{algorithm}
+\caption{Algoritmo de Batching}
+\begin{algorithmic}[1]
+\STATE Cargar todas las ordenes pendientes con sus respectivos items y coordenadas en el depósito
+\FOR{EACH order\_id en orders\_to\_process}
+    \STATE Filtrar las ordenes = order\_id
+    \STATE Ordenar por bay
+    \STATE Calcular la cantidad de bays
+    \IF{$bays \leq 5$} 
+        \STATE  $path \gets \text{coordenadas de todos las bays}$
+    \ELSE 
+        \STATE Simplifico el recorrido calculando 5 puntos claves: Inicio, primer cuarto, mitad tercer cuarto y final.
+        \STATE $qr_ix \gets \text{Indice del cuartil}$
+        \STATE $mid_ix \gets \text{Indice de la mitad}$
+        \STATE $path \gets \left[0, qr\_ix, mid_ix, 2 \times qr\_ix, n\_bays-1 \right]$
+    \ENDIF
+    \STATE orders\_path.APPEND([order\_id, path])  
+\ENDFOR
+\STATE \textbf{Cálculo de la distancia de Hausdorff}
+\STATE $n\_ordenes \gets size(orders\_path)$
+\STATE $matriz\_dist\_ordenes \gets n\_ordenes x matriz\_n_ordenes$
+\FOR{i = 0 to n\_ordenes - 1}
+    \STATE $path\_A \gets orders\_path[i][1]$
+    \FOR{j = 0 to n\_ordenes - 1}
+        \STATE $path\_B \gets orders\_path[j][1]$
+        \STATE $dist\_AB \gets \text{Hausdorff}(path\_A, path\_B)$
+        \STATE $dist\_BA \gets \text{Hausdorff}(path\_B, path\_A)$
+        \STATE  \textbf{Distancia simétrica de Hausdorff}
+        \STATE $dist\_final \gets max(dist\_AB,dist\_BA)$
+        \STATE $matriz\_dist\_ordenes[i][j] \gets dist\_final $
+        \STATE $matriz\_dist\_ordenes[j][i] \gets dist\_final $ 
+    \ENDFOR
+\ENDFOR
+\STATE  \textbf{Generación de batches greedy}
+\STATE $batches \gets \text{lista vacía}$
+\STATE $n\_batches \gets floor(n\_ordenes/ORDENES\_POR\_BATCH) $
+\FOR {$k \gets 1 to n\_batches$}
+    \STATE \textbf{Encontrar la orden \"semilla\" con los mejores vecinos más cercanos} 
+    \STATE $\text{distancias\_ordenadas} \leftarrow \text{Ordeno cada fila de } \text{orders\_distance\_matrix}$
+    \STATE Obtengo la matriz de distancias total para cada una de las órdenes más cercanas
+    \STATE $ dist\_ordenes\_cercanas \gets \text{Primera columna de } ordenes\_per\_batch\_i \text{ de } distancias\_ordenadas$
+    \STATE $$
+
+\ENDFOR
+
+\end{algorithmic}
+\end{algorithm} 
+
+\chapter{Marco teórico}
+Cita \cite{tarczynskiLinearProgrammingModels2023}.
+
+    \backmatter         % Folios in Arabic numerals, unnumbered chapters.
+
+\printbibliography
+
+\end{document}

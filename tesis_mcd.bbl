@@ -1,0 +1,66 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{tarczynskiLinearProgrammingModels2023}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7d06de6b612d9270def30fba888c4875}{%
+           family={Tarczyński},
+           familyi={T\bibinitperiod},
+           given={Grzegorz},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7d06de6b612d9270def30fba888c4875}
+      \strng{fullhash}{7d06de6b612d9270def30fba888c4875}
+      \strng{bibnamehash}{7d06de6b612d9270def30fba888c4875}
+      \strng{authorbibnamehash}{7d06de6b612d9270def30fba888c4875}
+      \strng{authornamehash}{7d06de6b612d9270def30fba888c4875}
+      \strng{authorfullhash}{7d06de6b612d9270def30fba888c4875}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Pick-and-pass systems are a part of picker-to-parts order-picking systems and constitute a very common storage solution in cases where customer orders are usually small and need to be completed very quickly. As workers pick items in the zones connected by conveyors, their work needs to be coordinated. The paper presents MILP models that optimize the order-picking process. The first model uses information about the expected demand for items to solve the storage location problem and balance the workload across zones. The task of the next model is order-batching and sequencing -- two concepts are presented that meet different assumptions. The results of the exemplary tasks solved with the use of the proposed MILP models show that the total picking time of a set of orders can be reduced by about 35-45\% in comparison with random policies. The paper presents an equation for the lower bound of a makespan. Recommendations about the number of zones that guarantee the required system efficiency are also introduced.}
+      \field{issn}{2081-8858, 2391-6060}
+      \field{journaltitle}{Operations Research and Decisions}
+      \field{langid}{english}
+      \field{number}{3}
+      \field{title}{Linear Programming Models for Optimal Workload and Batching in Pick-and-Pass Warehousing Systems}
+      \field{urlday}{11}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{volume}{33}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.37190/ord230309
+      \endverb
+      \verb{file}
+      \verb /home/javo/Zotero/storage/D45GRBK5/Tarczyński - 2023 - Linear programming models for optimal workload and batching in pick-and-pass warehousing systems.pdf
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
