@@ -75,7 +75,8 @@ El objetivo de este trabajo es desarrollar un modelo de programación lineal par
 
 \section{Situación actual}
 Shiphero desarrolla un software para la gestión de depósitos, que incluye funciones como la gestión de stock, el armado de pedidos y el despacho de mercadería.\\
-El caso en el que se va a enfocar en el trabajo es el de batching y routing. Batching se denomina al proceso en el cual un operario del deposito debe buscar los productos para armar un grupo de pedidos, en este caso 25. Lo productos están almacenados en estanterías, de manera relativamente aleatoria y el objetivo es de los pedidos pendientes encontrar los 25 que estén más cercanos entre si para lograr reducir el tiempo de trabajo. Ésta tarea es clave ya que se estima que el las tareas de recolección de órdenes pueden ser del order del 50\% al 70\% de los costos de operación del depósito.
+El caso en el que se va a enfocar en el trabajo es el de batching y routing. Batching se denomina al proceso en el cual un operario del deposito debe buscar los productos para armar un grupo de pedidos, en este caso 25. Lo productos están almacenados en estanterías, de manera relativamente aleatoria y el objetivo es de los pedidos pendientes encontrar los 25 que estén más cercanos entre si para lograr reducir el tiempo de trabajo. Ésta tarea es clave ya que se estima que el las tareas de recolección de órdenes pueden ser del order del 50\% al 70\% de los costos de operación del depósito.\\
+La modalidad de trabajo de Shiphero es del ti po 3PL (third party logistics), la cual consiste en en la la empresa se encarga de la gestión del stock, el armado de pedidos y el despacho de mercadería de multiples clientes. Las ordenes no mezclan productos de distintos clientes pero en el batching se pueden mezclar ordenes de distintos clientes. 
 
 \section{Algoritmo actual}
 El algoritmo que resuelve el batching se ejecuta cada vez que un operario solicita una acción de batching y determina las 25 ordenes más cercanas entre si entre todos las órdenes pendientes en ese momento.
@@ -117,19 +118,52 @@ El algoritmo que resuelve el batching se ejecuta cada vez que un operario solici
 \STATE $batches \gets \text{lista vacía}$
 \STATE $n\_batches \gets floor(n\_ordenes/ORDENES\_POR\_BATCH) $
 \FOR {$k \gets 1 to n\_batches$}
-    \STATE \textbf{Encontrar la orden \"semilla\" con los mejores vecinos más cercanos} 
+    \STATE \textbf{Encontrar la orden semilla con los mejores vecinos más cercanos} 
     \STATE $\text{distancias\_ordenadas} \leftarrow \text{Ordeno cada fila de } \text{orders\_distance\_matrix}$
     \STATE Obtengo la matriz de distancias total para cada una de las órdenes más cercanas
     \STATE $ dist\_ordenes\_cercanas \gets \text{Primera columna de } ordenes\_per\_batch\_i \text{ de } distancias\_ordenadas$
-    \STATE $$
+    \STATE $suma\_distancia\_ordenes \gets sum(dist\_ordenes\_cercanas, axis=1)$
+    \STATE Elijo la orden con la menor suma
+    \STATE Armo un batch con esa orden y sus 24 más cercanas
+    \STATE Elimino la orden de la matriz y repito
 
 \ENDFOR
 
 \end{algorithmic}
 \end{algorithm} 
 
+\section{Implementación del trabajo final}
+La implementación del trabajo final se va a realizar en Python, utilizando la librería Pulp para la resolución de los modelos de programación lineal. La idea es generar un modelo que permita comparar los resultados obtenidos por el algoritmo actual con los resultados obtenidos por el modelo de programación lineal. 
+Como el objetivo es comparar los resultados, se va a utilizar la misma información que utiliza el algoritmo actual para generar los batches. La información que se va a utilizar es la siguiente:
+\begin{itemize}
+    \item Lista de ordenes pendientes con sus respectivos items y coordenadas en el depósito.
+    \item Cantidad de ordenes por batch (25).
+    \item   Cantidad de batches a generar (1).
+    \item Distancia de Hausdorff entre cada par de ordenes.
+    \item Matriz de distancias entre cada par de ordenes.
+    \item Lista de ordenes generadas por el algoritmo actual.
+    \item Lista de ordenes generadas por el modelo de programación lineal.
+    \item Tiempo de ejecución del algoritmo actual.
+    \item Tiempo de ejecución del modelo de programación lineal.
+    \item Cantidad de ordenes generadas por el algoritmo actual.
+    \item Cantidad de ordenes generadas por el modelo de programación lineal.
+    \item Distancia total recorrida por el algoritmo actual.
+    \item Distancia total recorrida por el modelo de programación lineal.
+\end{itemize}
+Como segundo objetivo, si el tiempo de preparación de la tesis lo permite, se verificará cómo afecta los tiempos y distancias la reorganización de los productos en el depósito. Actualmente los productos están almacenados en estanterías de manera relativamente aleatoria, se podría verificar de organizarlos por dándole una sector a cada vendedor y dejar los que mas venden en la parte más cercana  a las estaciones de empaquetado.  
+
+
 \chapter{Marco teórico}
-Cita \cite{tarczynskiLinearProgrammingModels2023}.
+
+El problema abordado en este trabajo se enmarca dentro de la gestión operativa de depósitos, en particular en las decisiones asociadas al \textit{order picking}, es decir, el proceso mediante el cual los operarios recorren el depósito para recolectar los productos necesarios para preparar órdenes de clientes. Esta actividad suele representar una proporción significativa del costo operativo del depósito, por lo que pequeñas mejoras en la selección de órdenes, el agrupamiento y el recorrido pueden tener impacto directo sobre la productividad.
+
+Dentro del \textit{order picking}, el \textit{batching} consiste en agrupar varias órdenes para que sean recolectadas en un mismo recorrido. El objetivo es formar conjuntos de órdenes que compartan ubicaciones cercanas o recorridos compatibles, reduciendo así la distancia total recorrida y el tiempo de preparación. En contextos 3PL, donde un operador logístico administra inventario y pedidos de múltiples clientes, esta decisión es especialmente relevante porque el sistema debe coordinar órdenes heterogéneas sin comprometer la eficiencia operativa.
+
+El problema de \textit{batching} puede abordarse mediante heurísticas o mediante modelos de optimización. Las heurísticas, como los algoritmos greedy, permiten obtener soluciones rápidas y son adecuadas para entornos operativos donde el tiempo de respuesta es crítico. Sin embargo, no garantizan optimalidad y pueden dejar oportunidades de mejora sin explorar. En contraste, los modelos de programación lineal entera permiten formular explícitamente una función objetivo y un conjunto de restricciones, obteniendo una solución óptima o una cota contra la cual comparar el desempeño del algoritmo actual.
+
+En este trabajo, la distancia entre órdenes se representa a partir de sus ubicaciones dentro del depósito. Para ello se utiliza una matriz de distancias entre pares de órdenes, construida mediante la distancia de Hausdorff entre los recorridos aproximados de cada orden. Esta métrica permite comparar conjuntos de puntos y resulta útil cuando cada orden no está representada por una única ubicación, sino por varias posiciones asociadas a los productos que la componen.
+
+La propuesta se vincula con la literatura reciente sobre modelos de programación lineal aplicados a problemas de \textit{batching} y balanceo de carga en depósitos. En particular, \cite{tarczynskiLinearProgrammingModels2023} muestra que los modelos de programación lineal entera pueden utilizarse para optimizar decisiones de preparación de pedidos y comparar políticas operativas alternativas. Siguiendo esta línea, el presente trabajo no busca reemplazar directamente el algoritmo productivo de Shiphero, sino construir un modelo de referencia que permita evaluar su desempeño, cuantificar diferencias y detectar posibles puntos de mejora.
 
     \backmatter         % Folios in Arabic numerals, unnumbered chapters.
 
